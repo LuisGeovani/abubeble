@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ConvenioServiceTest {
+public class ConvenioServiceMockTest {
     @Mock
     private ConvenioRepository repo;
 
@@ -39,8 +39,6 @@ public class ConvenioServiceTest {
         convenios = new ArrayList<>();
         convenios.add(convenio1);
         convenios.add(convenio2);
-
-        var idRemover = 2L;
     }
 
     @Test
