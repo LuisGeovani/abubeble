@@ -1,4 +1,4 @@
-package br.ufac.sgcmapi.convenio;
+package br.ufac.sgcmapi.paciente;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -20,35 +20,35 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebMvcTest(ConvenioController.class)
-public class ConvenioControllerTest {
+@WebMvcTest(PacienteController.class)
+public class PacienteControllerTest {
 
     @MockitoBean
-    private ConvenioService servico;
+    private PacienteService servico;
 
     @Autowired
     private MockMvc mockMvc;
 
-    private Convenio convenio;
-    private List<Convenio> conveniosLista;
+    private Paciente paciente;
+    private List<Paciente> pacientesLista;
     private String conteudoJson;
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
-        convenio = new Convenio();
-        convenio.setId(1L);
+        paciente = new Paciente();
+        paciente.setId(1L);
 
-        conveniosLista = List.of(convenio);
+        pacientesLista = List.of(paciente); 
 
-        conteudoJson = new ObjectMapper().writeValueAsString(convenio);
+        conteudoJson = new ObjectMapper().writeValueAsString(paciente);
     }
 
     @Test
-    void testConvenioInserir() throws Exception {
-        Mockito.when(servico.salvar(any(Convenio.class)))
-               .thenReturn(convenio);
+    void testPacienteInserir() throws Exception {
+        Mockito.when(servico.salvar(any(Paciente.class)))
+               .thenReturn(paciente);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/convenio/inserir")
+        mockMvc.perform(MockMvcRequestBuilders.post("/paciente/inserir")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(conteudoJson))
                 
@@ -57,39 +57,31 @@ public class ConvenioControllerTest {
     }
 
     @Test
-    void testConvenioCOnsultar() throws Exception {
-        Mockito.when(servico.consultar((String) null)).thenReturn(conveniosLista);
+    void testPacienteConsultar() throws Exception {
+        Mockito.when(servico.consultar("teste")).thenReturn(pacientesLista);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/convenio/consultar"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/paciente/consultar")
+                .param("termoBusca", "teste"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.is(1)));
     }
 
     @Test
-    void testConvenioConsultarPorId() throws Exception {
-        Mockito.when(servico.consultar(1L)).thenReturn(convenio);
+    void testPacienteAtualizar() throws Exception {
+        Mockito.when(servico.salvar(any(Paciente.class))).thenReturn(paciente);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/convenio/consultar/1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(1)));
-    }
-
-    @Test
-    void testConvenioAtualizar() throws Exception {
-        Mockito.when(servico.salvar(any(Convenio.class))).thenReturn(convenio);
-
-        mockMvc.perform(MockMvcRequestBuilders.put("/convenio/atualizar")
+        mockMvc.perform(MockMvcRequestBuilders.put("/paciente/atualizar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(conteudoJson))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
-    void testConvenioRemover() throws Exception {
+    void testPacienteRemover() throws Exception {
         doNothing().when(servico).remover(1L);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/convenio/remover/1"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/paciente/remover/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

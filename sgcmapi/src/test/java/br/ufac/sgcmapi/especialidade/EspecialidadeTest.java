@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class EspecialidadeTest {
+    
     private Especialidade especialidade;
 
     @BeforeEach
@@ -13,14 +14,14 @@ public class EspecialidadeTest {
     }
 
     @Test
-    void TestEspecialidadeGetSet(){
-        var id = 1025l;
-        var nome = "Especialidade";
-
+    void TestEspecialidadeGettersSetters(){
+        var id = 2L;
+        var nome = "Especialidade Teste";
+    
         especialidade.setId(id);
         especialidade.setNome(nome);
 
-        assertEquals(1025l, especialidade.getId());
-        assertEquals("Especialidade", especialidade.getNome());
+        assertEquals(2L, especialidade.getId());
+        assertEquals("Especialidade Teste", especialidade.getNome());
     }
 }
